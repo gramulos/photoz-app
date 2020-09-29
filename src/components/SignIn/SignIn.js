@@ -1,9 +1,14 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { Card, Button, Form, FormGroup, Label, Input } from 'reactstrap'
+import FormContainer from 'components/FormContainer'
 import Text from 'components/Text'
-import Box from 'components/Box'
 import { Logo } from 'components/Icons'
-import './signIn.scss'
+
+const SIGN_IN_FIELD_NAMES = {
+  EMAIL: 'signInEmail',
+  PASSWORD: 'signInPassword',
+}
 
 const SignIn = () => {
   const [email, setEmail] = useState('')
@@ -11,34 +16,42 @@ const SignIn = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    alert(`Email: ${email}, Password: ${password}`)
+    const { elements } = e.target
+    const data = {
+      email: elements[SIGN_IN_FIELD_NAMES.EMAIL].value,
+      password: elements[SIGN_IN_FIELD_NAMES.PASSWORD].value,
+    }
+    console.log(data)
   }
 
   return (
-    <Box className="sign-in" centerVertically directionColumn>
+    <FormContainer>
       <Logo />
       <Text as="h1">PhotoZ</Text>
       <Card body className="p-4 mb-2">
         <Text as="h4" className="mb-4">
           Sing in
         </Text>
-        <Form onSubmit={handleSubmit}>
+        <Form id="signInForm" onSubmit={handleSubmit}>
           <FormGroup>
-            <Label for="signInEmail">Email</Label>
+            <Label for={SIGN_IN_FIELD_NAMES.EMAIL}>Email</Label>
             <Input
+              required
               type="email"
-              name="signInEmail"
-              id="signInEmail"
+              name={SIGN_IN_FIELD_NAMES.EMAIL}
+              id={SIGN_IN_FIELD_NAMES.EMAIL}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
           </FormGroup>
           <FormGroup className="mb-4">
-            <Label for="signInPassword">Password</Label>
+            <Label for={SIGN_IN_FIELD_NAMES.PASSWORD}>Password</Label>
             <Input
+              required
+              minLength="6"
               type="password"
-              name="signInPassword"
-              id="signInPassword"
+              name={SIGN_IN_FIELD_NAMES.PASSWORD}
+              id={SIGN_IN_FIELD_NAMES.PASSWORD}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
@@ -51,8 +64,10 @@ const SignIn = () => {
           </Button>
         </Form>
       </Card>
-      <Button color="link">Sing up</Button>
-    </Box>
+      <Link to="/sign-up" className="mt-2">
+        Sing up
+      </Link>
+    </FormContainer>
   )
 }
 
