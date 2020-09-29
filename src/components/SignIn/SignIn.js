@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useContext } from 'react'
+import { Link, useHistory } from 'react-router-dom'
 import { Card, Button, Form, FormGroup, Label, Input } from 'reactstrap'
+import { AuthContext } from 'components/Auth'
 import FormContainer from 'components/FormContainer'
 import Text from 'components/Text'
 import { Logo } from 'components/Icons'
@@ -11,8 +12,8 @@ const SIGN_IN_FIELD_NAMES = {
 }
 
 const SignIn = () => {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const history = useHistory()
+  const { setAuthStatus } = useContext(AuthContext)
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -22,6 +23,8 @@ const SignIn = () => {
       password: elements[SIGN_IN_FIELD_NAMES.PASSWORD].value,
     }
     console.log(data)
+    setAuthStatus(true)
+    history.push('/')
   }
 
   return (
@@ -40,8 +43,6 @@ const SignIn = () => {
               type="email"
               name={SIGN_IN_FIELD_NAMES.EMAIL}
               id={SIGN_IN_FIELD_NAMES.EMAIL}
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
             />
           </FormGroup>
           <FormGroup className="mb-4">
@@ -52,8 +53,6 @@ const SignIn = () => {
               type="password"
               name={SIGN_IN_FIELD_NAMES.PASSWORD}
               id={SIGN_IN_FIELD_NAMES.PASSWORD}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
             />
           </FormGroup>
           <Button color="link" className="px-0">

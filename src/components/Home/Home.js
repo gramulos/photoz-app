@@ -1,12 +1,19 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useContext } from 'react'
+import { Button } from 'reactstrap'
+import { AuthContext } from 'components/Auth'
 
 function Home() {
+  const { setAuthStatus } = useContext(AuthContext)
+  const signOut = (e) => {
+    e.preventDefault()
+    setAuthStatus(false)
+  }
+
   return (
     <div>
-      Welcome to Home!
+      Welcome to Protected Home!
       <br />
-      <Link to="/sign-in">Sign in here</Link>
+      <Button onClick={signOut}>Sign out</Button>
     </div>
   )
 }
