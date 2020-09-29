@@ -10,3 +10,8 @@ body,
   font-family: 'Montserrat', sans-serif;
   background-color: $light-blue;
 }
+
+// bootstrap override
+.container {
+  max-width: 960px;
+}
