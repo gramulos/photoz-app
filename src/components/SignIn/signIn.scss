@@ -1,0 +1,13 @@
+.sign-in {
+  width: 90%;
+
+  .card {
+    width: 100%;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .sign-in {
+    width: 460px;
+  }
+}
