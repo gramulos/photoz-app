@@ -1,0 +1,30 @@
+.nav-bar {
+  .navbar-brand {
+    margin: 0;
+  }
+
+  &__brand {
+    .h4 {
+      color: white;
+      display: none;
+    }
+  }
+
+  .nav-item {
+    list-style: none;
+
+    .nav-link {
+      color: white;
+    }
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .nav-bar {
+    &__brand {
+      .h4 {
+        display: inline;
+      }
+    }
+  }
+}

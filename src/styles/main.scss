@@ -1,4 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+@import 'colors';
+@import 'theme';
 
 html,
 body,
@@ -6,4 +8,5 @@ body,
   height: 100%;
   font-size: 14px;
   font-family: 'Montserrat', sans-serif;
+  background-color: $light-blue;
 }

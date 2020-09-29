@@ -3,6 +3,7 @@ import classNames from 'classnames'
 import './box.scss'
 
 function Box({
+  as: As = 'div',
   children,
   centerHorizontally,
   centerVertically,
@@ -10,7 +11,7 @@ function Box({
   className,
 }) {
   return (
-    <div
+    <As
       className={classNames(
         'box',
         {
@@ -22,7 +23,7 @@ function Box({
       )}
     >
       {children}
-    </div>
+    </As>
   )
 }
 
