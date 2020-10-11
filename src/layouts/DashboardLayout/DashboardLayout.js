@@ -1,6 +1,6 @@
 import React from 'react'
 import { Container } from 'reactstrap'
-import NavBar from 'components/NavBar'
+import NavBar from 'containers/NavBar'
 
 function DashboardLayout({ children }) {
   return (

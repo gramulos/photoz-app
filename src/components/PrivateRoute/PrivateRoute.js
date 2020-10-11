@@ -1,14 +1,23 @@
-import React, { useContext } from 'react'
+import React, { useEffect } from 'react'
 import { Route, Redirect } from 'react-router-dom'
-import { AuthContext } from 'components/Auth'
+import auth from 'utils/auth'
 
 function PrivteRoute({
   path,
   component: Component,
   layout: Layout = React.Fragment,
+  user,
+  getLoggedUser,
   ...rest
 }) {
-  const { isAuthenticated } = useContext(AuthContext)
+  const isAuthenticated = auth.isAuthenticated()
+  console.log(isAuthenticated)
+
+  useEffect(() => {
+    if (isAuthenticated && user && !user.username) {
+      getLoggedUser()
+    }
+  }, [getLoggedUser, isAuthenticated, user])
 
   return (
     <Route

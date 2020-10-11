@@ -1,6 +1,15 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
-import { Card, Button, Form, FormGroup, Label, Input } from 'reactstrap'
+import { Link, useHistory } from 'react-router-dom'
+import {
+  Card,
+  Button,
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  Spinner,
+  Alert,
+} from 'reactstrap'
 import FormContainer from 'components/FormContainer'
 import Text from 'components/Text'
 import { Logo } from 'components/Icons'
@@ -11,16 +20,20 @@ const SIGN_UP_FIELD_NAMES = {
   PASSWORD: 'signUpPassword',
 }
 
-function SignUp() {
-  const handleSubmit = (e) => {
+function SignUp({ signUp, isLoading, signUpError }) {
+  const history = useHistory()
+
+  const handleSubmit = async (e) => {
     e.preventDefault()
     const { elements } = e.target
-    const data = {
-      username: elements[SIGN_UP_FIELD_NAMES.USERNAME].value,
-      email: elements[SIGN_UP_FIELD_NAMES.EMAIL].value,
-      password: elements[SIGN_UP_FIELD_NAMES.PASSWORD].value,
+    const username = elements[SIGN_UP_FIELD_NAMES.USERNAME].value
+    const email = elements[SIGN_UP_FIELD_NAMES.EMAIL].value
+    const password = elements[SIGN_UP_FIELD_NAMES.PASSWORD].value
+    await signUp(username, email, password)
+
+    if (!signUpError) {
+      history.push('/sign-in')
     }
-    console.log(data)
   }
 
   return (
@@ -31,6 +44,7 @@ function SignUp() {
         <Text as="h4" className="mb-4">
           Sing up
         </Text>
+        {signUpError && <Alert color="danger">{signUpError}</Alert>}
         <Form id="signUpForm" onSubmit={handleSubmit}>
           <FormGroup>
             <Label for={SIGN_UP_FIELD_NAMES.USERNAME}>Username</Label>
@@ -60,8 +74,13 @@ function SignUp() {
               id={SIGN_UP_FIELD_NAMES.PASSWORD}
             />
           </FormGroup>
-          <Button type="submit" color="primary" className="float-right">
-            Sign up
+          <Button
+            type="submit"
+            color="primary"
+            className="float-right"
+            disabled={isLoading}
+          >
+            {isLoading ? <Spinner size="sm" color="light" /> : 'Sign up'}
           </Button>
         </Form>
       </Card>

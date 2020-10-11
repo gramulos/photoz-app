@@ -1,4 +1,5 @@
-import React, { useContext } from 'react'
+import React from 'react'
+import { useHistory } from 'react-router-dom'
 import {
   Navbar,
   NavbarBrand,
@@ -11,15 +12,17 @@ import {
 import Box from 'components/Box'
 import Text from 'components/Text'
 import { Logo } from 'components/Icons'
-import { AuthContext } from 'components/Auth'
+import auth from 'utils/auth'
 import './navbar.scss'
 
-function NavBar() {
-  const { setAuthStatus } = useContext(AuthContext)
+function NavBar({ signOut, user }) {
+  const history = useHistory()
 
-  const signOut = (e) => {
+  const handleSignOut = (e) => {
     e.preventDefault()
-    setAuthStatus(false)
+    auth.signOut()
+    signOut()
+    history.push('/sign-in')
   }
 
   return (
@@ -37,10 +40,10 @@ function NavBar() {
       </Button>
       <UncontrolledDropdown nav inNavbar>
         <DropdownToggle nav caret>
-          John Doe
+          {user.username}
         </DropdownToggle>
         <DropdownMenu right>
-          <DropdownItem onClick={signOut}>Sign out</DropdownItem>
+          <DropdownItem onClick={handleSignOut}>Sign out</DropdownItem>
         </DropdownMenu>
       </UncontrolledDropdown>
     </Navbar>

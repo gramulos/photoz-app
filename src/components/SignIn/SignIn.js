@@ -1,7 +1,15 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { Link, useHistory } from 'react-router-dom'
-import { Card, Button, Form, FormGroup, Label, Input } from 'reactstrap'
-import { AuthContext } from 'components/Auth'
+import {
+  Card,
+  Button,
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  Spinner,
+  Alert,
+} from 'reactstrap'
 import FormContainer from 'components/FormContainer'
 import Text from 'components/Text'
 import { Logo } from 'components/Icons'
@@ -11,20 +19,20 @@ const SIGN_IN_FIELD_NAMES = {
   PASSWORD: 'signInPassword',
 }
 
-const SignIn = () => {
+const SignIn = ({ signIn, isLoading, signInError }) => {
   const history = useHistory()
-  const { setAuthStatus } = useContext(AuthContext)
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     const { elements } = e.target
-    const data = {
-      email: elements[SIGN_IN_FIELD_NAMES.EMAIL].value,
-      password: elements[SIGN_IN_FIELD_NAMES.PASSWORD].value,
+    const email = elements[SIGN_IN_FIELD_NAMES.EMAIL].value
+    const password = elements[SIGN_IN_FIELD_NAMES.PASSWORD].value
+
+    const user = await signIn(email, password)
+
+    if (user) {
+      history.push('/')
     }
-    console.log(data)
-    setAuthStatus(true)
-    history.push('/')
   }
 
   return (
@@ -35,6 +43,7 @@ const SignIn = () => {
         <Text as="h4" className="mb-4">
           Sing in
         </Text>
+        {signInError && <Alert color="danger">{signInError}</Alert>}
         <Form id="signInForm" onSubmit={handleSubmit}>
           <FormGroup>
             <Label for={SIGN_IN_FIELD_NAMES.EMAIL}>Email</Label>
@@ -58,8 +67,13 @@ const SignIn = () => {
           <Button color="link" className="px-0">
             Forgot password
           </Button>
-          <Button type="submit" color="primary" className="float-right">
-            Sign in
+          <Button
+            type="submit"
+            color="primary"
+            className="float-right"
+            disabled={isLoading}
+          >
+            {isLoading ? <Spinner size="sm" color="light" /> : 'Sign in'}
           </Button>
         </Form>
       </Card>
